@@ -3,11 +3,14 @@ import email
 from email.header import decode_header
 import yaml
 from pprint import pprint
+import os
 
 login = "stestl779@gmail.com"
 password = "srdgglnrruqrmlfc"
 server = "imap.gmail.com"
 
+
+os.makedirs('attachments/', exist_ok=True)
 with open("config.yaml", "r") as file:
     credentials = yaml.safe_load(file)
     # pprint(credentials)
@@ -28,33 +31,8 @@ with open("config.yaml", "r") as file:
                 subject = subject.decode("utf-8")
             print(credential['login'], subject)
 
-
-            # for part in message.walk():
-            #     print(part)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+            for part in message.walk():
+                if part.get_filename() is not None:
+                    with open('attachments/' + part.get_filename(), "wb") as file:
+                        file.write(part.get_payload(decode=True))
+                        print("pobrano")
