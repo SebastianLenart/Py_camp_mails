@@ -16,7 +16,7 @@ class Mail:
     def __init__(self, subject):
         self.subject = subject
         self.contents = []
-        self.attachment = []
+        self.attachments = []
 
 
 class MailBox:
@@ -44,7 +44,7 @@ class MailBox:
         mail = Mail(subject)
         for part in message.walk():
             if part.get_filename() is not None:
-                mail.attachment.append(part)
+                mail.attachments.append(part)
             else:
                 mail.contents.append(part)
         return mail
@@ -109,7 +109,6 @@ def main(uploads_to, search, search_in_content, search_in_attachment_name):
                     for attachment in email.attachments:
                         with open(os.path.join(uploads_to, attachment.get_filename()), "wb") as file:
                             file.write(attachment.get_payload(decode=True))
-
 
 
 if __name__ == "__main__":
